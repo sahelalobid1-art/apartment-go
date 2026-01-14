@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Amenity;
 use App\Models\Apartment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -60,6 +61,9 @@ class ApartmentService
             // 3. ربط المرافق بالجدول الوسيط
             if (!empty($amenitiesIds)) {
                 // sync تقوم بربط الـ IDs وتتأكد من عدم التكرار
+                $amenitiesIds = Amenity::whereIn('name', $amenitiesIds)
+                    ->pluck('id')
+                    ->toArray();
                 $apartment->amenities()->sync($amenitiesIds);
             }
 
@@ -78,6 +82,9 @@ class ApartmentService
             // 1. التعامل مع المرافق
             if (isset($data['amenities'])) {
                 $amenitiesIds = $data['amenities'];
+                    $amenitiesIds = Amenity::whereIn('name', $amenitiesIds)
+                    ->pluck('id')
+                    ->toArray();
                 $apartment->amenities()->sync($amenitiesIds); // تحديث العلاقات (حذف القديم وإضافة الجديد)
                 unset($data['amenities']);
             }
