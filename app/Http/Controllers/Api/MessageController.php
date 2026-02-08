@@ -21,9 +21,6 @@ class MessageController extends Controller
         $this->messageService = $messageService;
     }
 
-    /**
-     * عرض قائمة المحادثات (Inbox)
-     */
     public function conversations(Request $request)
     {
         $conversations = $this->messageService->getUserConversations($request->user()->id);
@@ -31,20 +28,14 @@ class MessageController extends Controller
         return ConversationResource::collection($conversations);
     }
 
-    /**
-     * عرض الرسائل بين المستخدم الحالي ومستخدم آخر
-     */
+
     public function getMessages(Request $request, $userId)
     {
-        // $userId هنا هو الـ ID الخاص بالطرف الآخر في المحادثة
         $messages = $this->messageService->getConversationHistory($request->user()->id, $userId);
 
         return MessageResource::collection($messages);
     }
 
-    /**
-     * إرسال رسالة جديدة
-     */
     public function send(SendMessageRequest $request): JsonResponse
     {
         $message = $this->messageService->sendMessage($request->validated());
@@ -55,12 +46,8 @@ class MessageController extends Controller
         ], 201);
     }
 
-    /**
-     * تحديد رسالة معينة كمقروءة
-     */
     public function markAsRead(Message $message): JsonResponse
     {
-        // نستخدم الـ Policy للتحقق
         Gate::authorize('markAsRead', $message);
 
         $this->messageService->markMessageAsRead($message);

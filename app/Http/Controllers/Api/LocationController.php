@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\GovernorateResource; // استيراد
+use App\Http\Resources\GovernorateResource;
 use App\Models\Governorate;
 
 class LocationController extends Controller

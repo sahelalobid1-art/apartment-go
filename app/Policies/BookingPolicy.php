@@ -19,13 +19,11 @@ class BookingPolicy
 
     public function delete(User $user, Booking $booking): bool
     {
-        // المستخدم يستخدم Destroy للإلغاء
         return $user->id === $booking->tenant_id;
     }
 
     public function manage(User $user, Booking $booking): bool
     {
-        // للموافقة أو الرفض (للمالك فقط)
         return $user->id === $booking->apartment->owner_id;
     }
 }

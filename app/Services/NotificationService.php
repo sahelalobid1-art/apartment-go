@@ -8,24 +8,18 @@ use App\Models\Booking;
 
 class NotificationService
 {
-    /**
-     * إرسال إشعار متعلق بالحجز (الدالة التي كانت ناقصة)
-     */
     public function sendBookingNotification(User $recipient, Booking $booking, string $type)
     {
-        // هنا يمكنك تحديد محتوى الإشعار بناءً على نوعه
         $data = [
             'booking_id' => $booking->id,
             'type' => $type, // new, updated, cancelled, approved, rejected
             'message' => $this->getNotificationMessage($type, $booking),
         ];
 
-        // إنشاء الإشعار في قاعدة البيانات
-        // يمكنك هنا أيضاً إرسال إيميل أو إشعار حقيقي (Push Notification)
         return Notification::create([
             'user_id' => $recipient->id,
             'type' => 'booking_' . $type,
-            'data' => json_encode($data), // أو $data مباشرة إذا كان الحقل في الموديل casted to array
+            'data' => json_encode($data),
             'is_read' => false,
         ]);
     }
@@ -45,7 +39,6 @@ class NotificationService
         };
     }
 
-    // --- الدوال السابقة الخاصة بالـ NotificationController ---
 
     public function getUserNotifications(int $userId, int $perPage = 20)
     {

@@ -12,7 +12,6 @@ class ApartmentService
 {
     public function getAllApartments(array $filters)
     {
-        // الآن يمكننا استخدام with('amenities') بشكل نظامي وصحيح
         $query = Apartment::with(['images', 'owner', 'amenities'])
             ->available();
 
@@ -35,7 +34,7 @@ class ApartmentService
     public function getOwnerApartments(int $ownerId)
     {
         return Apartment::where('owner_id', $ownerId)
-            ->with(['images', 'amenities']) // تحميل المرافق
+            ->with(['images', 'amenities'])
             ->latest()
             ->paginate(10);
     }
@@ -49,9 +48,8 @@ class ApartmentService
     public function createApartment(array $data, ?array $images): Apartment
     {
         return DB::transaction(function () use ($data, $images) {
-            // 1. استخراج مصفوفة المرافق من البيانات (لأنها لم تعد موجودة في جدول الشقق)
             $amenitiesIds = $data['amenities'] ?? [];
-            unset($data['amenities']); // حذفها من المصفوفة حتى لا تسبب خطأ عند الإنشاء
+            unset($data['amenities']);
 
             $data['owner_id'] = Auth::id();
 
@@ -60,19 +58,17 @@ class ApartmentService
 
             // 3. ربط المرافق بالجدول الوسيط
             if (!empty($amenitiesIds)) {
-                // sync تقوم بربط الـ IDs وتتأكد من عدم التكرار
                 $amenitiesIds = Amenity::whereIn('name', $amenitiesIds)
                     ->pluck('id')
                     ->toArray();
                 $apartment->amenities()->sync($amenitiesIds);
             }
 
-            // 4. رفع الصور
             if ($images && count($images) > 0) {
                 $this->uploadImages($apartment, $images);
             }
 
-            return $apartment->load('amenities'); // إعادة التحميل لتظهر في الرد
+            return $apartment->load('amenities');
         });
     }
 
@@ -85,7 +81,7 @@ class ApartmentService
                     $amenitiesIds = Amenity::whereIn('name', $amenitiesIds)
                     ->pluck('id')
                     ->toArray();
-                $apartment->amenities()->sync($amenitiesIds); // تحديث العلاقات (حذف القديم وإضافة الجديد)
+                $apartment->amenities()->sync($amenitiesIds);
                 unset($data['amenities']);
             }
 
@@ -103,7 +99,6 @@ class ApartmentService
 
     public function deleteApartment(Apartment $apartment): void
     {
-        // العلاقات في الجدول الوسيط ستحذف تلقائياً بسبب onDelete('cascade') في الميجريشن
         $apartment->delete();
     }
 

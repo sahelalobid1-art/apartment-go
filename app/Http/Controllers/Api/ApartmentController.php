@@ -23,8 +23,6 @@ class ApartmentController extends Controller
 
     public function index(Request $request)
     {
-        // يجب أن تتأكد أن الـ Service يعيد البيانات مع العلاقات (Eager Loading)
-        // أو يمكنك تحميلها هنا إذا كان الـ Service يعيد Query Builder
         $apartments = $this->apartmentService->getAllApartments($request->all());
 
         return ApartmentResource::collection($apartments);
@@ -34,7 +32,6 @@ class ApartmentController extends Controller
     {
         $apartment = $this->apartmentService->getApartmentById($id);
 
-        // تحميل العلاقات الضرورية لعرض التفاصيل
         $apartment->load(['owner', 'images', 'amenities', 'reviews']);
 
         return new ApartmentResource($apartment);
@@ -47,12 +44,11 @@ class ApartmentController extends Controller
             $request->file('images')
         );
 
-        // تحميل العلاقات للرد بالبيانات كاملة
         $apartment->load(['images', 'owner', 'amenities']);
 
         return response()->json([
             'message' => 'Apartment created successfully',
-            'data' => new ApartmentResource($apartment), // هنا استخدمنا data لتوحيد الرد
+            'data' => new ApartmentResource($apartment),
         ], 201);
     }
 
@@ -63,7 +59,7 @@ class ApartmentController extends Controller
         $updatedApartment = $this->apartmentService->updateApartment(
             $apartment,
             $request->validated(),
-            $request->file('images') // <--- تمرير الصور الجديدة هنا
+            $request->file('images')
         );
 
         return response()->json([
@@ -73,7 +69,6 @@ class ApartmentController extends Controller
     }
 
 
-    // ... باقي الدوال (destroy, myApartments) كما هي
     public function destroy(Apartment $apartment): JsonResponse
     {
         Gate::authorize('delete', $apartment);

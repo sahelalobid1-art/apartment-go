@@ -70,7 +70,7 @@ class BookingController extends Controller
 
     public function approve(Booking $booking): JsonResponse
     {
-        Gate::authorize('manage', $booking); // صلاحية المالك
+        Gate::authorize('manage', $booking);
 
         $booking = $this->bookingService->approveBooking($booking);
 
@@ -82,7 +82,7 @@ class BookingController extends Controller
 
     public function reject(RejectBookingRequest $request, Booking $booking): JsonResponse
     {
-        Gate::authorize('manage', $booking); // صلاحية المالك
+        Gate::authorize('manage', $booking);
 
         $booking = $this->bookingService->rejectBooking($booking, $request->reason);
 

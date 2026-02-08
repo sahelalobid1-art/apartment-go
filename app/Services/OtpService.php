@@ -11,10 +11,8 @@ class OtpService
     {
         $otp = rand(1000, 9999);
 
-        // تخزين الـ OTP لمدة 5 دقائق
         Cache::put('otp_' . $phone, $otp, now()->addMinutes(5));
 
-        // TODO: دمج خدمة SMS هنا في بيئة الإنتاج
 
         return $otp;
     }

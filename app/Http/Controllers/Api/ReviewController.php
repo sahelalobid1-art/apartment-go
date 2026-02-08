@@ -34,7 +34,6 @@ class ReviewController extends Controller
 
     public function update(UpdateReviewRequest $request, Review $review): JsonResponse
     {
-        // التحقق من الصلاحية (هل المستخدم هو كاتب التقييم؟)
         Gate::authorize('update', $review);
 
         $updatedReview = $this->reviewService->updateReview($review, $request->validated());

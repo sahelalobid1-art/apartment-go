@@ -14,17 +14,14 @@ class ReviewService
     {
         $booking = Booking::findOrFail($data['booking_id']);
 
-        // 1. التحقق من أن المستخدم هو صاحب الحجز
         if ($booking->tenant_id !== Auth::id()) {
             abort(403, 'Unauthorized');
         }
 
-        // 2. التحقق من أن الحجز مكتمل
         if ($booking->status !== 'completed') {
             abort(400, 'Can only review completed bookings');
         }
 
-        // 3. التحقق من عدم وجود تقييم سابق
         if ($booking->review()->exists()) {
             abort(400, 'Booking already reviewed');
         }

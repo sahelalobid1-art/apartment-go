@@ -46,7 +46,6 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        // إحصائيات عامة
         $stats = [
             'total_users' => User::where('user_type', '!=', 'admin')->count(),
             'pending' => User::where('status', 'pending')->count(),
@@ -56,13 +55,11 @@ class AdminController extends Controller
             'tenants' => User::where('user_type', 'tenant')->where('status', 'approved')->count(),
         ];
 
-        // آخر 5 مستخدمين مسجلين
         $recentUsers = User::where('user_type', '!=', 'admin')
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 
-        // بيانات الرسم البياني (التسجيلات آخر 7 أيام)
         $registrationData = $this->getRegistrationStats(7);
 
         return view('admin.dashboard', compact('stats', 'recentUsers', 'registrationData'));
@@ -98,7 +95,6 @@ class AdminController extends Controller
 
         $users = $query->orderBy('created_at', 'desc')->paginate(10);
 
-        // إحصائيات سريعة للصفحة
         $stats = [
             'total' => User::where('user_type', '!=', 'admin')->count(),
             'owners' => User::where('user_type', 'owner')->count(),
@@ -154,7 +150,7 @@ class AdminController extends Controller
 
         for ($i = $days - 1; $i >= 0; $i--) {
             $date = Carbon::now()->subDays($i);
-            $labels[] = $date->format('Y-m-d'); // التسمية في المحور السيني
+            $labels[] = $date->format('Y-m-d');
             $data[] = User::whereDate('created_at', $date->format('Y-m-d'))
                           ->where('user_type', '!=', 'admin')
                           ->count();

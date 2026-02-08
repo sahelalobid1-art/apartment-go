@@ -28,7 +28,6 @@ class BookingService
 
     public function getOwnerBookings(int $ownerId)
     {
-        // جلب الشقق المملوكة للمستخدم أولاً
         $apartmentIds = Apartment::where('owner_id', $ownerId)->pluck('id');
 
         return Booking::with(['apartment.images', 'tenant'])
@@ -65,7 +64,6 @@ class BookingService
 
     public function updateBooking(Booking $booking, array $data): Booking
     {
-        // التحقق من حالة الحجز
         if (!in_array($booking->status, ['pending', 'approved'])) {
             throw ValidationException::withMessages(['error' => 'Cannot update this booking']);
         }
@@ -73,13 +71,11 @@ class BookingService
         $checkIn = $data['check_in_date'] ?? $booking->check_in_date;
         $checkOut = $data['check_out_date'] ?? $booking->check_out_date;
 
-        // التحقق من التوفر مع استثناء الحجز الحالي
         $this->ensureApartmentAvailable($booking->apartment_id, $checkIn, $checkOut, $booking->id);
 
-        // إعادة حساب السعر إذا تغيرت التواريخ
         if (isset($data['check_in_date']) || isset($data['check_out_date'])) {
             $booking->total_price = $this->calculatePrice($booking->apartment->price_per_night, $checkIn, $checkOut);
-            $booking->status = 'pending'; // إعادة الحالة للمراجعة
+            $booking->status = 'pending';
         }
 
         $booking->update($data);
@@ -129,10 +125,8 @@ class BookingService
         return $booking;
     }
 
-    // دوال مساعدة خاصة بالسيرفس
     private function ensureApartmentAvailable($apartmentId, $checkIn, $checkOut, $excludeBookingId = null)
     {
-        // نستخدم دالة الـ Model الأصلية إذا كانت موجودة، أو نكتب الكويري هنا
         if (Booking::checkAvailability($apartmentId, $checkIn, $checkOut, $excludeBookingId)) {
             throw ValidationException::withMessages(['error' => 'Apartment not available for selected dates']);
         }

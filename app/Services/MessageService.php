@@ -8,12 +8,8 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageService
 {
-    /**
-     * جلب قائمة المحادثات (آخر رسالة مع كل مستخدم)
-     */
     public function getUserConversations(int $userId): Collection
     {
-        // تم نقل المنطق المعقد من الكونترولر إلى هنا
         return Message::where(function ($query) use ($userId) {
             $query->where('sender_id', $userId)
                   ->orWhere('receiver_id', $userId);
@@ -28,7 +24,6 @@ class MessageService
             $lastMessage = $messages->first();
             $otherUser = $lastMessage->sender_id === $userId ? $lastMessage->receiver : $lastMessage->sender;
 
-            // حساب الرسائل غير المقروءة الواردة من الطرف الآخر
             $unreadCount = $messages->where('receiver_id', $userId)
                                     ->where('is_read', false)
                                     ->count();
@@ -42,9 +37,6 @@ class MessageService
         ->values();
     }
 
-    /**
-     * جلب سجل المحادثة بين المستخدم الحالي ومستخدم آخر وتحديدها كمقروءة
-     */
     public function getConversationHistory(int $currentUserId, int $otherUserId)
     {
         $messages = Message::where(function ($query) use ($currentUserId, $otherUserId) {
@@ -76,15 +68,9 @@ class MessageService
 
         $message = Message::create($data);
 
-        // هنا يمكنك إضافة كود إرسال الـ Push Notification
-        // $this->notificationService->sendPush(...)
-
         return $message;
     }
 
-    /**
-     * تحديد رسالة محددة كمقروءة
-     */
     public function markMessageAsRead(Message $message): void
     {
         $message->update(['is_read' => true]);

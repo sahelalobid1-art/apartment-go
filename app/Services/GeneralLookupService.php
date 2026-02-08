@@ -14,21 +14,14 @@ class GeneralLookupService
      */
     public function getActiveBanners(): Collection
     {
-        // يمكن إضافة كاش هنا لتحسين الأداء
         return Banner::active()->get(['id', 'title', 'image_url', 'link']);
     }
 
-    /**
-     * جلب قائمة المحافظات
-     */
     public function getAllGovernorates(): Collection
     {
         return Governorate::all(['id', 'name', 'image_url']);
     }
 
-    /**
-     * جلب قائمة المرافق
-     */
     public function getAllAmenities(): Collection
     {
         return Amenity::all(['id', 'name', 'icon']);

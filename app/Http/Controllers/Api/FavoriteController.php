@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Favorite\ToggleFavoriteRequest;
-use App\Http\Resources\ApartmentResource; // نستخدم الريسورس الذي أنشأناه سابقاً
+use App\Http\Resources\ApartmentResource;
 use App\Services\FavoriteService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,14 +16,12 @@ class FavoriteController extends Controller
     public function __construct(FavoriteService $favoriteService)
     {
         $this->favoriteService = $favoriteService;
-        // $this->middleware('auth:api'); // يفضل وضعه في ملف routes/api.php
     }
 
     public function index(Request $request)
     {
         $favorites = $this->favoriteService->getUserFavorites($request->user());
 
-        // استخدام ApartmentResource لتوحيد شكل البيانات مع باقي التطبيق
         return ApartmentResource::collection($favorites);
     }
 

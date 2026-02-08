@@ -7,7 +7,6 @@ use App\Models\User;
 
 class ApartmentPolicy
 {
-    // السماح للجميع بالمشاهدة
     public function viewAny(?User $user): bool
     {
         return true;

@@ -28,7 +28,6 @@ class NotificationController extends Controller
 
     public function markAsRead(Notification $notification): JsonResponse
     {
-        // التحقق من الملكية عبر Policy
         Gate::authorize('update', $notification);
 
         $this->notificationService->markAsRead($notification);

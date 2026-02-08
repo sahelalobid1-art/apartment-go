@@ -15,17 +15,13 @@ class AuthController extends Controller
 {
     protected AuthService $authService;
 
-    // لم نعد بحاجة لحقن OtpService
     public function __construct(AuthService $authService)
     {
         $this->authService = $authService;
     }
 
-    // تم حذف دالة sendOtp لأن Firebase يتولى الأمر
-
     public function register(RegisterRequest $request): JsonResponse
     {
-        // تم إزالة استثناء 'otp' لأننا لم نعد نرسله أصلاً
         $user = $this->authService->registerUser(
             $request->except(['profile_image', 'id_image']),
             $request->file('profile_image'),
@@ -35,13 +31,12 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Registration successful. Waiting for admin approval.',
             'user' => new UserResource($user),
-            'token' => \Tymon\JWTAuth\Facades\JWTAuth::fromUser($user), // إضافة التوكن مباشرة بعد التسجيل (اختياري)
+            'token' => \Tymon\JWTAuth\Facades\JWTAuth::fromUser($user),
         ], 201);
     }
 
     public function login(LoginRequest $request): JsonResponse
     {
-        // تم إزالة $request->otp
         $result = $this->authService->loginUser(
             $request->phone,
             $request->fcm_token
