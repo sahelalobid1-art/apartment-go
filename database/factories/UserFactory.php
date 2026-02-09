@@ -36,7 +36,6 @@ class UserFactory extends Factory
             'status' => $this->faker->randomElement(['pending', 'approved']),
             'fcm_token' => null,
 
-            // أعمدة مخفية لكنها موجودة في الجدول
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

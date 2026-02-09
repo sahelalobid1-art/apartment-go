@@ -8,7 +8,6 @@ class UpdateApartmentRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        // سيتم التعامل مع ملكية الشقة في الـ Policy
         return true;
     }
 

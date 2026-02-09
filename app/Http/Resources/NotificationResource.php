@@ -12,8 +12,8 @@ class NotificationResource extends JsonResource
         return [
             'id' => $this->id,
             'type' => $this->type,
-            'data' => $this->data, // لارافيل تخزن بيانات الإشعار في عمود JSON يسمى data
-            'is_read' => (bool) $this->read_at, // نتحقق مما إذا كان مقروءاً بناءً على توقيت القراءة
+            'data' => $this->data,
+            'is_read' => (bool) $this->read_at,
             'created_at' => $this->created_at->toIso8601String(),
             'read_at' => $this->read_at,
         ];

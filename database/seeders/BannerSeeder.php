@@ -20,7 +20,7 @@ class BannerSeeder extends Seeder
             [
                 'title' => 'Summer Offers in Latakia',
                 'image_url' => 'assets/banners/summer_offer.jpg',
-                'link' => '/search?governorate=Latakia', // رابط داخلي للبحث مثلاً
+                'link' => '/search?governorate=Latakia',
                 'is_active' => true,
                 'order' => 2
             ],
@@ -35,7 +35,7 @@ class BannerSeeder extends Seeder
 
         foreach ($banners as $banner) {
             Banner::firstOrCreate(
-                ['image_url' => $banner['image_url']], // نعتمد مسار الصورة كمعرف فريد لمنع التكرار
+                ['image_url' => $banner['image_url']],
                 $banner
             );
         }

@@ -16,7 +16,6 @@ class ReviewResource extends JsonResource
             'rating' => $this->rating,
             'comment' => $this->comment,
             'created_at' => $this->created_at->toIso8601String(),
-            // نفترض وجود UserResource كما في الأمثلة السابقة
             'tenant' => $this->whenLoaded('tenant', function () {
                 return [
                     'id' => $this->tenant->id,

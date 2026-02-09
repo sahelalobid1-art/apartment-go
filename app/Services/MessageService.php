@@ -50,7 +50,6 @@ class MessageService
         ->orderBy('created_at', 'asc')
         ->get();
 
-        // تحديد الرسائل الواردة كمقروءة
         Message::where('sender_id', $otherUserId)
             ->where('receiver_id', $currentUserId)
             ->where('is_read', false)
@@ -59,9 +58,6 @@ class MessageService
         return $messages;
     }
 
-    /**
-     * إرسال رسالة جديدة
-     */
     public function sendMessage(array $data): Message
     {
         $data['sender_id'] = Auth::id();

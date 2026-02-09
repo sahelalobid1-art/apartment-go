@@ -22,7 +22,6 @@ class AmenitySeeder extends Seeder
         ];
 
         foreach ($amenities as $item) {
-             // نستخدم updateOrCreate لتحديث القيم القديمة بالروابط الجديدة
             Amenity::updateOrCreate(
                 ['name' => $item['name']],
                 ['icon' => $item['icon']]

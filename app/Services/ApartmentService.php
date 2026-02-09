@@ -53,10 +53,8 @@ class ApartmentService
 
             $data['owner_id'] = Auth::id();
 
-            // 2. إنشاء الشقة
             $apartment = Apartment::create($data);
 
-            // 3. ربط المرافق بالجدول الوسيط
             if (!empty($amenitiesIds)) {
                 $amenitiesIds = Amenity::whereIn('name', $amenitiesIds)
                     ->pluck('id')
@@ -75,7 +73,6 @@ class ApartmentService
     public function updateApartment(Apartment $apartment, array $data, ?array $newImages = null): Apartment
     {
         return DB::transaction(function () use ($apartment, $data, $newImages) {
-            // 1. التعامل مع المرافق
             if (isset($data['amenities'])) {
                 $amenitiesIds = $data['amenities'];
                     $amenitiesIds = Amenity::whereIn('name', $amenitiesIds)
@@ -85,10 +82,8 @@ class ApartmentService
                 unset($data['amenities']);
             }
 
-            // 2. تحديث بيانات الشقة
             $apartment->update($data);
 
-            // 3. رفع الصور الجديدة
             if ($newImages && count($newImages) > 0) {
                 $this->uploadImages($apartment, $newImages);
             }

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->string('image_url');
-            $table->string('link')->nullable(); // للتوجه لصفحة معينة عند الضغط
+            $table->string('link')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->integer('order')->default(0); // للترتيب
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

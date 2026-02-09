@@ -15,7 +15,6 @@ class LoginRequest extends FormRequest
     {
         return [
             'phone' => 'required|string',
-            // 'otp' => 'required|string', // تم الحذف
             'fcm_token' => 'nullable|string',
         ];
     }

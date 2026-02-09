@@ -17,7 +17,7 @@ class MessageResource extends JsonResource
             'message' => $this->message,
             'is_read' => (bool) $this->is_read,
             'created_at' => $this->created_at->toIso8601String(),
-            'sender' =>$this->sender, // افترضنا وجود UserResource
+            'sender' =>$this->sender,
             'receiver' => $this->sender,
         ];
     }

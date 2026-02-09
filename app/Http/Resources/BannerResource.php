@@ -12,7 +12,6 @@ class BannerResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            // دالة للحصول على الرابط الكامل سواء كان في assets أو storage
             'image_url' => $this->getImageUrl($this->image_url),
             'action_url' => $this->link,
         ];
@@ -23,13 +22,10 @@ class BannerResource extends JsonResource
         if (!$path) return null;
         if (filter_var($path, FILTER_VALIDATE_URL)) return $path;
 
-        // إذا كانت الصورة مرفوعة (تبدأ بـ public) نحولها لـ storage
         if (str_starts_with($path, 'public/')) {
             $path = str_replace('public/', '', $path);
             return asset('storage/' . $path);
         }
-
-        // إذا كانت في المجلد العام مباشرة (مثل assets/...)
         return asset($path);
     }
 }

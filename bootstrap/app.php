@@ -14,10 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
-        // 1. إخبار لارافيل بالوثوق في بروكسي Railway (حل مشكلة الـ 419)
         $middleware->trustProxies(at: '*');
 
-        // 2. تعريف الـ Alias الخاص بك كما كان
         $middleware->alias([
             'admin' => AdminMiddleware::class,
         ]);

@@ -24,9 +24,6 @@ class NotificationService
         ]);
     }
 
-    /**
-     * دالة مساعدة لتوليد نص الرسالة
-     */
     private function getNotificationMessage(string $type, Booking $booking): string
     {
         return match ($type) {

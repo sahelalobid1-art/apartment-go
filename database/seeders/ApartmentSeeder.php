@@ -38,27 +38,23 @@ class ApartmentSeeder extends Seeder
                 'area' => rand(80, 250),
                 'max_guests' => rand(2, 8),
                 'status' => 'available',
-                'average_rating' => rand(3, 5), // تقييم مبدئي
+                'average_rating' => rand(3, 5),
             ]);
 
-            // ربط المرافق (Pivot Table)
             if ($amenities->count() > 0) {
-                // نأخذ عدد عشوائي من المرافق ونربطها بالشقة
+
                 $apartment->amenities()->attach($amenities->random(rand(3, 6))->pluck('id'));
             }
 
-            // 4. تحميل وحفظ الصورة
             $imageName = 'apartments/' . Str::random(15) . '.jpg';
 
             try {
-                // نستخدم Picsum وهي خدمة مستقرة وسريعة
-                // نستخدم Http Facade لأنه أفضل في التعامل مع الأخطاء من file_get_contents
+
                 $response = Http::timeout(10)->get('https://picsum.photos/800/600');
 
                 if ($response->successful()) {
                     Storage::disk('public')->put($imageName, $response->body());
 
-                    // حفظ السجل في قاعدة البيانات
                     $apartment->images()->create([
                         'image_url' => $imageName,
                         'is_primary' => true
@@ -70,7 +66,7 @@ class ApartmentSeeder extends Seeder
                 }
 
             } catch (\Exception $e) {
-                // في حال انقطاع النت، لا نوقف العملية، بل نكمل بدون صورة
+
                 $this->command->error(" - Could not download image: " . $e->getMessage());
             }
         }

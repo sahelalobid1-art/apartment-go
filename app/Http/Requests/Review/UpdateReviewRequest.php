@@ -8,7 +8,7 @@ class UpdateReviewRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // سيتم التحقق من الملكية عبر Policy
+        return true;
     }
 
     public function rules(): array

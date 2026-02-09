@@ -9,9 +9,6 @@ use Illuminate\Support\Collection;
 
 class GeneralLookupService
 {
-    /**
-     * جلب البنرات النشطة للصفحة الرئيسية
-     */
     public function getActiveBanners(): Collection
     {
         return Banner::active()->get(['id', 'title', 'image_url', 'link']);

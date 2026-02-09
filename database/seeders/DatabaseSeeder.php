@@ -21,10 +21,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             GovernorateSeeder::class,
             AmenitySeeder::class,
-            BannerSeeder::class, // تمت الإضافة
+            BannerSeeder::class,
             // ApartmentSeeder::class,
             // BookingSeeder::class,
-            // ...
+
         ]);
     }
 }

@@ -8,7 +8,7 @@ class StoreReviewRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // سيتم التحقق من ملكية الحجز داخل السيرفس
+        return true;
     }
 
     public function rules(): array

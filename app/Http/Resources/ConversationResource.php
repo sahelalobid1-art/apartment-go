@@ -9,9 +9,8 @@ class ConversationResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        // البيانات هنا تأتي من مصفوفة قمنا بتشكيلها في السيرفس
         return [
-            'user' => $this['user'], // بيانات المستخدم الآخر
+            'user' => $this['user'],
             'last_message' => new MessageResource($this['last_message']),
             'unread_count' => $this['unread_count'],
         ];

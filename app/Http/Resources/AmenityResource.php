@@ -12,8 +12,6 @@ class AmenityResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            // نعيد الأيقونة كما هي (سواء كانت رابط أو نص)
-            // لأن الفرونت أند سيتعامل معها
             'icon' => $this->icon,
         ];
     }

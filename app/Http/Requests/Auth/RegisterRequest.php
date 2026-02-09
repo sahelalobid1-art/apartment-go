@@ -16,7 +16,6 @@ class RegisterRequest extends FormRequest
         return [
             'phone' => 'required|string|max:20|unique:users',
             'user_type' => 'required|in:tenant,owner',
-            // 'otp' => 'required|string', // تم الحذف
             'first_name' => 'required|string|max:100',
             'last_name' => 'required|string|max:100',
             'birth_date' => 'required|date',

@@ -8,7 +8,7 @@ class ToggleFavoriteRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // التحقق من تسجيل الدخول يتم عبر الـ Middleware
+        return true;
     }
 
     public function rules(): array

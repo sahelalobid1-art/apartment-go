@@ -21,22 +21,17 @@ class Apartment extends Model
         'bathrooms',
         'area',
         'max_guests',
-        // 'amenities', // <--- تم حذفه لأنه أصبح في جدول منفصل
         'status',
         'average_rating',
         'total_reviews',
     ];
 
     protected $casts = [
-        // 'amenities' => 'array', // <--- تم حذفه
         'price_per_night' => 'decimal:2',
         'area' => 'decimal:2',
         'average_rating' => 'decimal:2',
     ];
 
-    // --- العلاقات ---
-
-    // العلاقة الجديدة الاحترافية
     public function amenities()
     {
         return $this->belongsToMany(Amenity::class, 'apartment_amenity');
@@ -67,8 +62,6 @@ class Apartment extends Model
         return $this->belongsToMany(User::class, 'favorites');
     }
 
-    // --- Scopes ---
-
     public function scopeAvailable($query)
     {
         return $query->where('status', 'available');
@@ -91,12 +84,6 @@ class Apartment extends Model
         if (isset($filters['bedrooms'])) {
             $query->where('bedrooms', '>=', $filters['bedrooms']);
         }
-        // يمكن الآن إضافة فلترة حسب المرافق بسهولة (مثال إضافي)
-        // if (isset($filters['amenities'])) {
-        //    $query->whereHas('amenities', function($q) use ($filters) {
-        //        $q->whereIn('id', $filters['amenities']);
-        //    });
-        // }
 
         return $query;
     }

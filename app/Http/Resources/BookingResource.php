@@ -17,7 +17,6 @@ class BookingResource extends JsonResource
             'status' => $this->status,
             'payment_method' => $this->payment_method,
             'cancellation_reason' => $this->when($this->status === 'rejected', $this->cancellation_reason),
-            // تحميل العلاقات فقط إذا كانت متوفرة لتجنب N+1 query
             'apartment' => new ApartmentResource($this->whenLoaded('apartment')),
             'tenant' => $this->whenLoaded('tenant'),
             'created_at' => $this->created_at->toIso8601String(),

@@ -9,7 +9,6 @@ class StoreApartmentRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        // التحقق من أن المستخدم هو مالك
         return Auth::user()->user_type === 'owner';
     }
 

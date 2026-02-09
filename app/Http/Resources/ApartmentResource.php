@@ -11,7 +11,6 @@ class ApartmentResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        // معالجة الصور
         $imageUrls = [];
         if ($this->relationLoaded('images') && $this->images) {
             foreach ($this->images as $img) {
@@ -41,7 +40,6 @@ class ApartmentResource extends JsonResource
 
             'owner' => new UserResource($this->whenLoaded('owner')),
 
-            // هنا السحر! نستخدم Resource Collection للعلاقة مباشرة
             'amenities' => AmenityResource::collection($this->whenLoaded('amenities')),
 
             'created_at' => $this->created_at ? $this->created_at->toIso8601String() : now()->toIso8601String(),
